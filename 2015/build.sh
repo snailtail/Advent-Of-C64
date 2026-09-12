@@ -7,4 +7,5 @@ fi
 dag="$1"
 del="$2"
 
-cl65 -O -t c64 -o ./bin/day"$dag"-"$del".prg day"$dag"-"$del".c
+# Bygg binär, inklusive label-fil.
+cl65 -O -t c64 -g -Ln ./bin/day"$dag"-"$del".lbl -o ./bin/day"$dag"-"$del".prg day"$dag"-"$del".c
