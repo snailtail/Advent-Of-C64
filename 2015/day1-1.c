@@ -41,6 +41,13 @@ int solve(const char* chars)
 int main(void)
 {
     int result=0;
+    printf("***************************************\n");
+    printf("* github.com/snailtail/Advent-Of-C64\n");
+    printf("* Advent of C64 \n");
+    printf("* 2015\n");
+    printf("* Day  1\n");
+    printf("* Part 1\n");
+    printf("***************************************\n\n");
     printf("Tests:\n\n");
     result=solve(input1);
     printf("%s = %d (should be %d)\n", input1, result, answer1);
