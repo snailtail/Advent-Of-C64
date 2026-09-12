@@ -6,5 +6,5 @@ if [ -z $1 ] || [ -z $2 ]; then
 fi
 dag="$1"
 del="$2"
-
-cl65 -O -t c64 -o ./bin/day"$dag"-"$del".prg day"$dag"-"$del".c
+./build.sh $dag $del
+x64sc -autostart "./bin/day${dag}-${del}.prg" > /dev/null 2>&1 &
