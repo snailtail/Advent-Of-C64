@@ -2,16 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*
- * Läser in en hel fil (t.ex. "DAYx.IN" på device 8, se build_d64.sh) till
- * en malloc:ad, nolltermimerad buffert. Anroparen äger minnet och ska
- * free() det. Returnerar NULL om filen inte kunde öppnas.
- *
- * Ger dig hela filens innehåll som en sträng. Om pusslet vill ha en
- * array med rader istället får man stycka upp den (t.ex. med strtok
- * på '\n') efter att den lästs in - det är olika nog från dag till dag
- * att det inte finns någon generell lösning för det här.
- */
 #define READ_CHUNK_SIZE 256
 
 char* read_input_file(const char* filename)
