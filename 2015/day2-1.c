@@ -4,7 +4,7 @@
 
 // Input ligger som en include - C64:an beter sig inte när man ska läsa in från fil - det verkar ställa till det så att strtok() eller freads() inte funkar som de ska sen.
 #include "day2.h"
-const char testinput1[]="2x3x4";
+char testinput1[]="2x3x4";
 const int testresult1=58;
 
 long solve(char* data)
@@ -79,6 +79,6 @@ int main(void)
 
     printf("\n\nSolution:\n\n");
     result = solve(input);
-    printf("Del 1 lösning: %ld\n", result);
+    printf("Del 1: %ld\n", result);
     return 0;
 }
