@@ -33,6 +33,36 @@ char* read_input_file(const char* filename)
     return buf;
 }
 
+/*
+ * OBS: kör inte strtok() på resultatet av read_input_file() (eller
+ * någon annan buffert som fyllts via fread()) - det finns ett
+ * bibliotekssamspel-fel i cc65 dar strtok() slutar hitta separatorer
+ * helt efter att fread() anropats, oavsett buffert/separator. Använd
+ * read_line() nedan för radvis inläsning istället.
+ */
+
+/*
+ * Läser en rad från f in i buf (högst size-1 tecken + nolltermination),
+ * och tar bort ett eventuellt radslutstecken (\r och/eller \n) i
+ * slutet. OBS: input-filen på disken måste ha CR (\r) som radslut for
+ * att fgets() ska hitta radbrytningarna - se write_input_seq() i
+ * lib.sh, som konverterar LF -> CR automatiskt vid paketering.
+ * Returnerar buf, eller NULL vid EOF/fel.
+ */
+char* read_line(FILE* f, char* buf, size_t size)
+{
+    size_t len;
+
+    if (!fgets(buf, size, f)) {
+        return NULL;
+    }
+    len = strlen(buf);
+    while (len > 0 && (buf[len - 1] == '\r' || buf[len - 1] == '\n')) {
+        buf[--len] = '\0';
+    }
+    return buf;
+}
+
 int solve()
 {
     return 0;

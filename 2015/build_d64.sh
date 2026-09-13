@@ -7,9 +7,12 @@
 #
 # Ett program läser sin input via t.ex.
 #   FILE *f = fopen("DAY1.IN", "r");
-# (se read_input_file() i template.c).
+# (se read_input_file() / read_line() i template.c).
 
 set -euo pipefail
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${script_dir}/lib.sh"
 
 d64="./bin/aoc2015.d64"
 
@@ -29,9 +32,8 @@ for src in $(ls day*-*.c 2>/dev/null | sort -V); do
     cbmname=$(echo "$base" | tr '[:lower:]' '[:upper:]')   # DAY1-1
     c1541 "$d64" -write "./bin/${base}.prg" "$cbmname"
 
-    inputfile="./input/day${dag}.txt"
-    if [ -f "$inputfile" ] && [ -z "${input_written[$dag]:-}" ]; then
-        c1541 "$d64" -write "$inputfile" "DAY${dag}.IN,s"
+    if [ -z "${input_written[$dag]:-}" ]; then
+        write_input_seq "$d64" "$dag"
         input_written[$dag]=1
     fi
 done

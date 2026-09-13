@@ -6,6 +6,10 @@ if [ -z $1 ] || [ -z $2 ]; then
 fi
 dag="$1"
 del="$2"
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${script_dir}/lib.sh"
+
 ./build.sh $dag $del
 
 # Hämta körtidsadressen för _main ur label-filen och sätt brytpunkten
@@ -27,10 +31,6 @@ d64="./bin/day${dag}-${del}.d64"
 
 rm -f "$d64"
 c1541 -format "aoc2015,15" d64 "$d64" -write "./bin/day${dag}-${del}.prg" "$cbmname" > /dev/null
-
-inputfile="./input/day${dag}.txt"
-if [ -f "$inputfile" ]; then
-    c1541 "$d64" -write "$inputfile" "DAY${dag}.IN,s" > /dev/null
-fi
+write_input_seq "$d64" "$dag"
 
 x64sc -keepmonopen -autostart "${d64}:${cbmname}" -initbreak "0x${mainaddr}" > /dev/null 2>&1 &
