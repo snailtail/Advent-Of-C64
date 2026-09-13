@@ -62,6 +62,5 @@ int main(void)
     printf("\nSolution:\n");
     result = solve(input);
     printf("Real input = %d \n", result);
-    free(input);
 }
 
