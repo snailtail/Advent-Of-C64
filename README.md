@@ -11,7 +11,7 @@ This is my attempt at solving some of the puzzles from [Advent of Code](https://
 
 ## Quirks and stuff  
 
-I've noticed that when I used `fread()`, or `fgets()`, I would get weird problems with `strok()`, `sscanf()`, and `strchr()`. They would simply not work as they should.  
+I've noticed that when I used `fread()`, or `fgets()`, I would get weird problems with `strtok()`, `sscanf()`, and `strchr()`. They would simply not work as they should.  
 The exact same data, put on the stack or heap using any other method, did not cause the same issues. So after a long time of troubleshooting I decided to abandon that method. I was thinking of loading the inputs from textfiles, like I usually do - instead of baking it into the source code.  
 But there must be some weird bug in the cc65 CBM filesystem layer or something that messes things up. So I instead went for the method of putting the input for each day into a header file, and excluding that from the git repo via .gitignore. All in order to not expose the inputs publicly, as requested by the creator of Advent of Code.  
 
