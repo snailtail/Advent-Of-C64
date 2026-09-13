@@ -1,25 +1,18 @@
 #!/usr/bin/env bash
 #
-# Bygger samtliga day<dag>-<del>.c och paketerar alla .prg-filer, plus
-# tillhörande input-filer (input/day<dag>.txt), i en gemensam D64-avbild.
-# Avbilden kan sedan kopieras rakt av till Kung Fu Flash 2:ans SD-kort och
-# köras på riktig hårdvara - inget behöver bakas in i källkoden/binären.
+# Bygger samtliga day<dag>-<del>.c och paketerar alla .prg-filer i en
+# gemensam D64-avbild. Avbilden kan sedan kopieras rakt av till Kung Fu
+# Flash 2:ans SD-kort och köras på riktig hårdvara.
 #
-# Ett program läser sin input via t.ex.
-#   FILE *f = fopen("DAY1.IN", "r");
-# (se read_input_file() / read_line() i template.c).
+# Input bakas in i respektive dags källkod via en #include "dayX.h"
+# (se t.ex. day2-1.c) - inget läses från disk vid körning.
 
 set -euo pipefail
-
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${script_dir}/lib.sh"
 
 d64="./bin/aoc2015.d64"
 
 rm -f "$d64"
 c1541 -format "aoc2015,15" d64 "$d64"
-
-declare -A input_written
 
 for src in $(ls day*-*.c 2>/dev/null | sort -V); do
     base="${src%.c}"          # day1-1
@@ -31,11 +24,6 @@ for src in $(ls day*-*.c 2>/dev/null | sort -V); do
 
     cbmname=$(echo "$base" | tr '[:lower:]' '[:upper:]')   # DAY1-1
     c1541 "$d64" -write "./bin/${base}.prg" "$cbmname"
-
-    if [ -z "${input_written[$dag]:-}" ]; then
-        write_input_seq "$d64" "$dag"
-        input_written[$dag]=1
-    fi
 done
 
 c1541 "$d64" -list

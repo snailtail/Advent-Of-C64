@@ -6,10 +6,6 @@ if [ -z $1 ] || [ -z $2 ]; then
 fi
 dag="$1"
 del="$2"
-
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${script_dir}/lib.sh"
-
 ./build.sh $dag $del
 
 # Hämta körtidsadressen för _main ur label-filen och sätt brytpunkten
@@ -22,15 +18,4 @@ if [ -z "$mainaddr" ]; then
     exit 1
 fi
 
-# Bygg en liten D64 med bara den här dagens/delens prg (+ ev. delad
-# input-fil), så att fopen("DAYx.IN", ...) fungerar likadant i Vice
-# som på den fysiska maskinen via KFF2. Se build_d64.sh för den fulla
-# paketeringen av samtliga dagar.
-cbmname=$(echo "day${dag}-${del}" | tr '[:lower:]' '[:upper:]')  # DAY1-1
-d64="./bin/day${dag}-${del}.d64"
-
-rm -f "$d64"
-c1541 -format "aoc2015,15" d64 "$d64" -write "./bin/day${dag}-${del}.prg" "$cbmname" > /dev/null
-write_input_seq "$d64" "$dag"
-
-x64sc -keepmonopen -autostart "${d64}:${cbmname}" -initbreak "0x${mainaddr}" > /dev/null 2>&1 &
+x64sc -keepmonopen -autostart "./bin/day${dag}-${del}.prg" -initbreak "0x${mainaddr}" > /dev/null 2>&1 &
